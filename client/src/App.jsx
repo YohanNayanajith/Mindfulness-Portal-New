@@ -58,10 +58,10 @@ const App = () => {
         <Route path="/success" element={<Success />} />
         <Route path="/products" element={<AllProducts />} />
         <Route path="/contactus" element={<ContactUs />} />
-        <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
+        <Route path="/login" element={user.currentUser ? <Navigate to="/" /> : <Login />} />
         <Route
           path="/register"
-          element={user ? <Navigate to="/" /> : <Register />}
+          element={user.currentUser ? <Navigate to="/" /> : <Register />}
         />
       </Routes>
     </BrowserRouter>

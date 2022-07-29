@@ -3,8 +3,9 @@ import { Search, ShoppingCartOutlined, AccountCircle } from "@material-ui/icons"
 import React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../redux/userSlice";
 
 const Container = styled.div`
   height: 60px;
@@ -72,6 +73,7 @@ const Navbar = () => {
   const quantity = useSelector((state) => state.cart.quantity);
   const user = useSelector((state) => state.user);
   const navigation = useNavigate();
+  const dispatch = useDispatch();
   console.log(quantity);
   const openHome = () => {
     navigation("/");
@@ -83,6 +85,7 @@ const Navbar = () => {
     navigation("/login");
   };
   const clickLogOut = () => {
+    // dispatch(logout());
     navigation("/login");
   };
   const clickProduct = () => {
@@ -111,12 +114,12 @@ const Navbar = () => {
           <MenuItem onClick={clickProduct}>SHOP PAGE</MenuItem>
           <MenuItem onClick={clickContact}>CONTACT US</MenuItem>
 
-          {user ? (
+          {user.currentUser ? (
             <MenuItem onClick={clickLogOut}>LOGOUT</MenuItem>
           ) : (
             <MenuItem onClick={clickRegister}>REGISTER</MenuItem>
           )}
-          {user ? (
+          {user.currentUser ? (
             <MenuItem><AccountCircle /></MenuItem>
           ) : (
             <MenuItem onClick={clickSignIn}>SIGN IN</MenuItem>

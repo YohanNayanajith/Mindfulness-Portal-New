@@ -14,6 +14,7 @@ const CartSchema = new mongoose.Schema(
         },
       },
     ],
+    isPay: { type:Boolean, default: false},
   },
   { timestamps: true }
 );

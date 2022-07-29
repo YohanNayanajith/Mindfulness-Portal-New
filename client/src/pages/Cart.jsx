@@ -5,14 +5,24 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { userRequest } from "../requestMethods";
 import StripeCheckout from "react-stripe-checkout";
+// import { Search, ShoppingCartOutlined, AccountCircle } from "@material-ui/icons";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { removeProduct } from "../redux/cartRedux";
 
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import CheckoutForm from "../components/CheckoutForm";
 // const KEY = process.env.REACT_APP_STRIPE;
-const KEY = "pk_test_51LKTEFC5XWsBcsgy0nXH9vDEsMvsmjDznRBbQXVhH6PVbECbImSX18NEuk7Qu4QuDWEhkz2xGA0L0Qi8czIgeazn00OEVeVNs7";
+//yohannayanajith13@gmail.com
+
+const KEY =
+  "pk_test_51LQvEKAjPRkUStMYeszYDlKAWx1thKzD8UU92RgiQMeTsHUGozDB2rrN0Nm8nVuCXefDo5t8WCkAcHXkBhoTdFWx00Eg83KkA1";
 console.log(KEY);
+const stripePromise = loadStripe(KEY);
 
 const Container = styled.div``;
 
@@ -104,6 +114,13 @@ const PriceDetail = styled.div`
   align-items: center;
   justify-content: center;
 `;
+const PriceDetailContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
 
 const ProductAmountContainer = styled.div`
   display: flex;
@@ -164,32 +181,77 @@ const Button = styled.button`
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const [stripeToken, setStripeToken] = useState(null);
+  const [productId, setProductId] = useState("");
+  const [productPrice, setProductPrice] = useState(0);
   // const history = useHistory();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onToken = (token) => {
     setStripeToken(token);
   };
+  console.log(stripeToken);
 
   useEffect(() => {
     const makeRequest = async () => {
       try {
         const res = await userRequest.post("/checkout/payment", {
           tokenId: stripeToken.id,
-          amount: 500,
+          amount: cart.total * 100,
         });
         // history.push("/success", {
         //   stripeData: res.data,
         //   products: cart,
         // });
-        navigate("/success", {
-          stripeData: res.data,
-          products: cart,
-        });
+        // navigate("/success", {
+        //   stripeData: res.data,
+        //   products: cart,
+        // });
+        console.log(res);
       } catch {}
     };
+    // stripeToken && cart.total >= 1 && makeRequest();
     stripeToken && makeRequest();
   }, [stripeToken, cart.total, navigate]);
+
+  const navigateShop = () => {
+    navigate("/products");
+  };
+
+  const removeItem = () => {
+    // alert("delete button clicked");
+    dispatch(removeProduct({ productId, productPrice }));
+    // removeCartDetails();
+  };
+
+  // const removeCartDetails = async () => {
+  //   try {
+  //     let response = await fetch("http://localhost:5000/api/v1/carts", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         // token: token,
+  //       },
+  //       body: JSON.stringify({
+  //         userId: user._id,
+  //         products: [
+  //           {
+  //             productId: id,
+  //             quantity: quantity,
+  //           },
+  //         ],
+  //       }),
+  //     });
+  //     let json = await response.json();
+  //     setData(json);
+  //     console.log(json);
+  //     setAllShow(true);
+  //     // setLoading(false);
+  //   } catch (error) {
+  //     alert(error);
+  //   }
+  // };
+
   return (
     <Container>
       <Navbar />
@@ -197,7 +259,7 @@ const Cart = () => {
       <Wrapper>
         <Title>YOUR BAG</Title>
         <Top>
-          <TopButton>CONTINUE SHOPPING</TopButton>
+          <TopButton onClick={navigateShop}>CONTINUE SHOPPING</TopButton>
           <TopTexts>
             <TopText>Shopping Bag(2)</TopText>
             <TopText>Your Wishlist (0)</TopText>
@@ -223,16 +285,30 @@ const Cart = () => {
                     </ProductSize>
                   </Details>
                 </ProductDetail>
-                <PriceDetail>
-                  <ProductAmountContainer>
-                    <Add />
-                    <ProductAmount>{product.quantity}</ProductAmount>
-                    <Remove />
-                  </ProductAmountContainer>
-                  <ProductPrice>
-                    $ {product.price * product.quantity}
-                  </ProductPrice>
-                </PriceDetail>
+                <PriceDetailContainer>
+                  <PriceDetail>
+                    <ProductAmountContainer>
+                      <Add />
+                      <ProductAmount>{product.quantity}</ProductAmount>
+                      <Remove />
+                    </ProductAmountContainer>
+                    <ProductPrice>
+                      $ {product.price * product.quantity}
+                    </ProductPrice>
+                  </PriceDetail>
+                  <PriceDetail>
+                    {/* <div>Delete</div> */}
+                    {/* <svg data-testid="DeleteForeverIcon"></svg> */}
+                    <DeleteForeverIcon
+                      sx={{ fontSize: 35, color: "red" }}
+                      onClick={() => {
+                        removeItem();
+                        setProductId(product._id);
+                        setProductPrice(product.price * product.quantity);
+                      }}
+                    />
+                  </PriceDetail>
+                </PriceDetailContainer>
               </Product>
             ))}
             <Hr />
@@ -267,6 +343,10 @@ const Cart = () => {
             >
               <Button>CHECKOUT NOW</Button>
             </StripeCheckout>
+            {/* <Elements stripe={stripePromise} options={options}>
+            {/* <Elements stripe={stripePromise} >
+              <CheckoutForm />
+            </Elements> */}
           </Summary>
         </Bottom>
       </Wrapper>

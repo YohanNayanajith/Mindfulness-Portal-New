@@ -44,6 +44,7 @@ const Option = styled.option``;
 
 const AllProducts = () => {
   //   const cat = window.location.pathname.split("/")[2];
+    const cat = "all";
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState("newest");
 
@@ -90,7 +91,7 @@ const AllProducts = () => {
           </Select>
         </Filter>
       </FilterContainer>
-      <Products filters={filters} sort={sort} number={1000} />
+      <Products cat={cat} filters={filters} sort={sort} number={1000} />
       <Newsletter />
       <Footer />
     </Container>

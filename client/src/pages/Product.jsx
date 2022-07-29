@@ -7,8 +7,10 @@ import Newsletter from "../components/Newsletter";
 import { mobile } from "../responsive";
 import { publicRequest } from "../requestMethods";
 import { React, useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../redux/cartRedux";
+import SweetAlert from "react-bootstrap-sweetalert";
+import { useNavigate } from "react-router";
 
 const Container = styled.div``;
 
@@ -127,7 +129,13 @@ const Product = (props) => {
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
+  const [allFailShow, setAllFailShow] = useState(false);
+  const [allShow, setAllShow] = useState(false);
+  const [show, setShow] = useState(false);
+  const [data, setData] = useState([]);
+  const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -149,9 +157,53 @@ const Product = (props) => {
   };
 
   const handleClick = () => {
-    dispatch(
-      addProduct({ ...product, quantity, color, size })
-    );
+    if (!size || !color) {
+      // alert("Please select color & size!");
+      setAllFailShow(true);
+    } else if (!user) {
+      setShow(true);
+    } else {
+      dispatch(addProduct({ ...product, id, quantity, color, size }));
+      saveCartDetails();
+      // setAllShow(true);
+      // alert("Product added successful!");
+    }
+  };
+
+  const saveCartDetails = async () => {
+    try {
+      let response = await fetch("http://localhost:5000/api/v1/carts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // token: token,
+        },
+        body: JSON.stringify({
+          userId: user._id,
+          products: [
+            {
+              productId: id,
+              quantity: quantity,
+            },
+          ],
+        }),
+      });
+      let json = await response.json();
+      setData(json);
+      console.log(json);
+      setAllShow(true);
+      // setLoading(false);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const messageConfirm = () => {
+    setShow(false);
+    navigate("/login");
+  };
+  const messageCancel = () => {
+    setShow(false);
   };
 
   return (
@@ -170,7 +222,11 @@ const Product = (props) => {
             <Filter>
               <FilterTitle>Color</FilterTitle>
               {product.color?.map((item) => (
-                <FilterColor color={item} key={item} onClick={() => setColor(item)} />
+                <FilterColor
+                  color={item}
+                  key={item}
+                  onClick={() => setColor(item)}
+                />
               ))}
             </Filter>
             <Filter>
@@ -194,6 +250,31 @@ const Product = (props) => {
       </Wrapper>
       <Newsletter />
       <Footer />
+      <SweetAlert
+        show={allShow}
+        success
+        title="Successfully added!"
+        onConfirm={() => setAllShow(false)}
+      ></SweetAlert>
+      <SweetAlert
+        show={allFailShow}
+        warning
+        title="Please select color and size!"
+        onConfirm={() => setAllFailShow(false)}
+      ></SweetAlert>
+      <SweetAlert
+        show={show}
+        warning
+        showCancel
+        confirmBtnText="Yes"
+        confirmBtnBsStyle="danger"
+        title="Please,sign in first!"
+        onConfirm={messageConfirm}
+        onCancel={messageCancel}
+        focusCancelBtn
+      >
+        You will not be able to recover this imaginary file!
+      </SweetAlert>
     </Container>
   );
 };
