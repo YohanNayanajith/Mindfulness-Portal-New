@@ -15,6 +15,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import AllProducts from "./components/AllProducts";
 import ContactUs from "./pages/ContactUs";
+import ForgetPassword from "./pages/ForgotPassword";
+import OrderHistory from "./pages/OrderHistory";
 
 const App = () => {
   const user = useSelector((state) => state.user);
@@ -59,6 +61,8 @@ const App = () => {
         <Route path="/products" element={<AllProducts />} />
         <Route path="/contactus" element={<ContactUs />} />
         <Route path="/login" element={user.currentUser ? <Navigate to="/" /> : <Login />} />
+        <Route path="/forgotPassword" element={<ForgetPassword />} />
+        <Route path="/orderHistory" element={<OrderHistory />} />
         <Route
           path="/register"
           element={user.currentUser ? <Navigate to="/" /> : <Register />}
