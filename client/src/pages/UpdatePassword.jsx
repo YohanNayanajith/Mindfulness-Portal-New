@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+// import { login } from "../../redux/apiCalls";
 import SweetAlert from "react-bootstrap-sweetalert";
 // import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import { logout } from "../redux/userSlice";
 // import {
 //   useNavigate,
 // } from 'react-router-dom';
@@ -69,11 +71,11 @@ const Link = styled.a`
   color: black;
 `;
 
-const ForgetPassword = () => {
+const UpdatePassword = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const isFetching = useSelector((state) => state.user.currentUser);
+  const user = useSelector((state) => state.user.currentUser);
   const isfail = useSelector((state) => state.user.error);
   const [data, setData] = useState([]);
   const [userId, setUserId] = useState([]);
@@ -83,39 +85,11 @@ const ForgetPassword = () => {
   const dispatch = useDispatch();
   // const navigation = useNavigate();
 
-  const handleClick = (e) => {
+  const checkLogin = async (e) => {
     e.preventDefault();
-    const checkEmail = async () => {
-      try {
-        let response = await fetch(
-          "http://192.168.8.187:5000/api/v1/user/email",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              // token: token,
-            },
-            body: JSON.stringify({
-              email: email,
-            }),
-          }
-        );
-        let json = await response.json();
-        // console.log(json);
-        setData(json[0]);
-        setUserId(json[0]._id);
-        checkLogin(json[0]._id);
-      } catch (error) {
-        setAllErrorShow(true);
-      }
-    };
-    checkEmail();
-  };
-
-  const checkLogin = async (id) => {
     try {
       let response = await fetch(
-        `http://192.168.8.187:5000/api/v1/user/${id}`,
+        `http://192.168.8.187:5000/api/v1/user/${user._id}`,
         {
           method: "PUT",
           headers: {
@@ -131,6 +105,7 @@ const ForgetPassword = () => {
       let json = await response.json();
       setData(json);
       setAllShow(true);
+      dispatch(logout());
       window.location.href = "http://localhost:3000/login";
     } catch (error) {
       setAllErrorShow(true);
@@ -141,12 +116,7 @@ const ForgetPassword = () => {
     <Container>
       <Wrapper>
         <Title>Forget Password</Title>
-        <Form onSubmit={handleClick}>
-          <Input
-            placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+        <Form onSubmit={checkLogin}>
           <Input
             placeholder="Password"
             type="password"
@@ -180,4 +150,4 @@ const ForgetPassword = () => {
   );
 };
 
-export default ForgetPassword;
+export default UpdatePassword;

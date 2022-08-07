@@ -12,6 +12,15 @@ const OrderSchema = new mongoose.Schema(
           type: Number,
           default: 1,
         },
+        title:{
+          type: String,
+        },
+        desc:{
+          type: String,
+        },
+        img:{
+          type: String,
+        }
       },
     ],
     amount: { type: Number, required: true },

@@ -5,17 +5,20 @@ import Navbar from '../components/Navbar'
 import Newsletter from '../components/Newsletter'
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import OrderHistoryComponent from "../components/OrderHistory.jsx/OrderHistoryComponent";
+import OrderHistoryComponent from "../components/OrderHistory/OrderHistoryComponent";
+import OrderHistoryTest from "../components/OrderHistory/OrderHistoryTest";
 
 const OrderHistory = () => {
   return (
     <div>
-      <Announcement />
+      
       <Navbar />
+      <Announcement />
       {/* <Slider /> */}
       {/* <Categories /> */}
       {/* <Products/> */}
-      <OrderHistoryComponent />
+      <OrderHistoryTest />
+      {/* <OrderHistoryComponent /> */}
       <Newsletter/>
       <Footer/>
     </div>

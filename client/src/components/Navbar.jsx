@@ -85,7 +85,8 @@ const Navbar = () => {
     navigation("/login");
   };
   const clickLogOut = () => {
-    // dispatch(logout());
+    dispatch(logout());
+    // alert("Logout");
     navigation("/login");
   };
   const clickProduct = () => {
@@ -93,6 +94,12 @@ const Navbar = () => {
   };
   const clickContact = () => {
     navigation("/contactus");
+  };
+  const clickOrderHistory = () => {
+    navigation("/orderHistory");
+  };
+  const clickArticles = () => {
+    navigation("/article");
   };
   return (
     <Container>
@@ -111,7 +118,13 @@ const Navbar = () => {
         </Center>
 
         <Right>
-          <MenuItem onClick={clickProduct}>SHOP PAGE</MenuItem>
+          <MenuItem onClick={clickProduct}>SHOP</MenuItem>
+          <MenuItem onClick={clickArticles}>ARTICLES</MenuItem>
+          {user.currentUser ? (
+            <MenuItem onClick={clickOrderHistory}>HISTORY</MenuItem>
+          ) : (
+            <></>
+          )}
           <MenuItem onClick={clickContact}>CONTACT US</MenuItem>
 
           {user.currentUser ? (
@@ -120,7 +133,8 @@ const Navbar = () => {
             <MenuItem onClick={clickRegister}>REGISTER</MenuItem>
           )}
           {user.currentUser ? (
-            <MenuItem><AccountCircle /></MenuItem>
+            // <MenuItem><AccountCircle /></MenuItem>
+            <></>
           ) : (
             <MenuItem onClick={clickSignIn}>SIGN IN</MenuItem>
           )}

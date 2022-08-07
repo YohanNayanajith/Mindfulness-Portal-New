@@ -17,6 +17,11 @@ import AllProducts from "./components/AllProducts";
 import ContactUs from "./pages/ContactUs";
 import ForgetPassword from "./pages/ForgotPassword";
 import OrderHistory from "./pages/OrderHistory";
+import Articles from "./pages/Articles";
+import AllArticles from "./components/articles/AllArticles";
+import ArticleList from "./pages/ArticleList";
+import Article from "./pages/Articles";
+import UpdatePassword from "./pages/UpdatePassword";
 
 const App = () => {
   const user = useSelector((state) => state.user);
@@ -63,6 +68,11 @@ const App = () => {
         <Route path="/login" element={user.currentUser ? <Navigate to="/" /> : <Login />} />
         <Route path="/forgotPassword" element={<ForgetPassword />} />
         <Route path="/orderHistory" element={<OrderHistory />} />
+        <Route path="/article" element={<AllArticles />} />
+        <Route path="/articles/:category" element={<ArticleList />} />
+        <Route path="/article/:id" element={<Article />} />
+        <Route path="/forgetPassword" element={<ForgetPassword />} />
+        <Route path="/updatePassword" element={<UpdatePassword />} />
         <Route
           path="/register"
           element={user.currentUser ? <Navigate to="/" /> : <Register />}

@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { loginSuccess } from "../redux/userSlice";
 import SweetAlert from "react-bootstrap-sweetalert";
 // import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import emailjs from "@emailjs/browser";
 // import {
 //   useNavigate,
 // } from 'react-router-dom';
@@ -71,17 +73,15 @@ const Link = styled.a`
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const isFetching = useSelector((state) => state.user.currentUser);
-  const isfail = useSelector((state) => state.user.error);
   const [data, setData] = useState([]);
   const [userId, setUserId] = useState([]);
-  // const navigate  = useNavigate();
-  const [allShow, setAllShow] = useState(false);
+
   const [allErrorShow, setAllErrorShow] = useState(false);
   const dispatch = useDispatch();
-  // const navigation = useNavigate();
+  const form = useRef();
+  const [show, setShow] = useState(false);
+  const [randomNumber, setRandomNumber] = useState(0);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -101,10 +101,12 @@ const ForgetPassword = () => {
           }
         );
         let json = await response.json();
-        // console.log(json);
+        console.log(json);
         setData(json[0]);
         setUserId(json[0]._id);
-        checkLogin(json[0]._id);
+        sendEmail(e);
+        dispatch(loginSuccess(data));
+        // checkLogin(json[0]._id);
       } catch (error) {
         setAllErrorShow(true);
       }
@@ -112,63 +114,59 @@ const ForgetPassword = () => {
     checkEmail();
   };
 
-  const checkLogin = async (id) => {
-    try {
-      let response = await fetch(
-        `http://192.168.8.187:5000/api/v1/user/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            // token: token,
-          },
-          body: JSON.stringify({
-            password: password,
-            confirm_password: confirmPassword,
-          }),
+  //   updatePassword
+  const sendEmail = (e) => {
+    let RandomNumber = Math.floor(Math.random() * 10000) + 1;
+    setRandomNumber(RandomNumber);
+    var templateParams = {
+      user_name: data.username,
+      user_email: data.email,
+      message: "Verification code is " + randomNumber,
+    };
+
+    console.log(templateParams);
+
+    emailjs
+      .send(
+        "service_ntuuid7",
+        "template_n8skbru",
+        templateParams,
+        "o0lw901wGvFdlC5iy"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          setShow(true);
+          e.target.reset();
+          window.location.href = "http://localhost:3000/updatePassword";
+        },
+        (error) => {
+          console.log(error.text);
         }
       );
-      let json = await response.json();
-      setData(json);
-      setAllShow(true);
-      window.location.href = "http://localhost:3000/login";
-    } catch (error) {
-      setAllErrorShow(true);
-    }
   };
 
   return (
     <Container>
+      <SweetAlert
+        show={show}
+        success
+        title="Email Sent!"
+        onConfirm={() => setShow(false)}
+      ></SweetAlert>
       <Wrapper>
         <Title>Forget Password</Title>
-        <Form onSubmit={handleClick}>
+        <Form onSubmit={handleClick} ref={form}>
           <Input
             placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <Input
-            placeholder="Password"
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <Input
-            placeholder="Confirm Password"
-            type="password"
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-          <Button>Change Password</Button>
+
+          <Button disabled={isFetching}>Check Email</Button>
         </Form>
       </Wrapper>
-      <SweetAlert
-        show={allShow}
-        success
-        title="Password Changed!"
-        // text="SweetAlert in React"
-        onConfirm={() => setAllShow(false)}
-      ></SweetAlert>
+
       <SweetAlert
         show={allErrorShow}
         danger

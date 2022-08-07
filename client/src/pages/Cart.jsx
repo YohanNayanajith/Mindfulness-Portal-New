@@ -11,7 +11,11 @@ import { userRequest } from "../requestMethods";
 import StripeCheckout from "react-stripe-checkout";
 // import { Search, ShoppingCartOutlined, AccountCircle } from "@material-ui/icons";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { removeProduct } from "../redux/cartRedux";
+import {
+  removeProduct,
+  decreaseAddProduct,
+  increaseAddProduct,
+} from "../redux/cartRedux";
 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -183,6 +187,8 @@ const Cart = () => {
   const [stripeToken, setStripeToken] = useState(null);
   const [productId, setProductId] = useState("");
   const [productPrice, setProductPrice] = useState(0);
+  const [price, setPrice] = useState(0);
+  const [productQuantity, setProductQuantity] = useState(0);
   // const history = useHistory();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -212,7 +218,7 @@ const Cart = () => {
     };
     // stripeToken && cart.total >= 1 && makeRequest();
     stripeToken && makeRequest();
-  }, [stripeToken, cart.total, navigate]);
+  }, [stripeToken, cart.total, cart.products, navigate]);
 
   const navigateShop = () => {
     navigate("/products");
@@ -223,30 +229,30 @@ const Cart = () => {
     dispatch(removeProduct({ productId, productPrice }));
     // removeCartDetails();
   };
+  const increaseItem = () => {
+    dispatch(increaseAddProduct({ productId, productPrice, price }));
+    // updateCartDetails();
+  };
+  const decreaseItem = () => {
+    dispatch(decreaseAddProduct({ productId, productPrice, price }));
+    // updateCartDetails();
+  };
 
-  // const removeCartDetails = async () => {
+  // const updateCartDetails = async () => {
   //   try {
-  //     let response = await fetch("http://localhost:5000/api/v1/carts", {
-  //       method: "POST",
+  //     let response = await fetch(`http://localhost:5000/api/v1/carts/{productId}`, {
+  //       method: "PUT",
   //       headers: {
   //         "Content-Type": "application/json",
   //         // token: token,
   //       },
   //       body: JSON.stringify({
-  //         userId: user._id,
-  //         products: [
-  //           {
-  //             productId: id,
-  //             quantity: quantity,
-  //           },
-  //         ],
+  //         quantity: productQuantity
   //       }),
   //     });
   //     let json = await response.json();
-  //     setData(json);
   //     console.log(json);
-  //     setAllShow(true);
-  //     // setLoading(false);
+  //     alert("Update");
   //   } catch (error) {
   //     alert(error);
   //   }
@@ -261,16 +267,16 @@ const Cart = () => {
         <Top>
           <TopButton onClick={navigateShop}>CONTINUE SHOPPING</TopButton>
           <TopTexts>
-            <TopText>Shopping Bag(2)</TopText>
-            <TopText>Your Wishlist (0)</TopText>
+            {/* <TopText>Shopping Bag(2)</TopText> */}
+            {/* <TopText>Your Wishlist (0)</TopText> */}
           </TopTexts>
           <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
           <Info>
             {cart.products.map((product) => (
-              <Product>
-                <ProductDetail key={product._id}>
+              <Product key={product._id}>
+                <ProductDetail>
                   <Image src={product.img} />
                   <Details>
                     <ProductName>
@@ -280,18 +286,43 @@ const Cart = () => {
                       <b>ID:</b> {product._id}
                     </ProductId>
                     <ProductColor color={product.color} />
-                    <ProductSize>
-                      <b>Size:</b> {product.size}
-                    </ProductSize>
+                    {product.size ? (
+                      <ProductSize>
+                        <b>Size:</b> {product.size}
+                      </ProductSize>
+                    ) : (
+                      <></>
+                    )}
                   </Details>
                 </ProductDetail>
                 <PriceDetailContainer>
                   <PriceDetail>
-                    <ProductAmountContainer>
-                      <Add />
-                      <ProductAmount>{product.quantity}</ProductAmount>
-                      <Remove />
-                    </ProductAmountContainer>
+                    {product.size ? (
+                      <ProductAmountContainer>
+                        <Add
+                          onClick={() => {
+                            increaseItem();
+                            setProductId(product._id);
+                            setProductPrice(product.price * product.quantity);
+                            setPrice(product.price);
+                            setProductQuantity(product.quantity + 1);
+                          }}
+                        />
+                        <ProductAmount>{product.quantity}</ProductAmount>
+                        <Remove
+                          onClick={() => {
+                            decreaseItem();
+                            setProductId(product._id);
+                            setProductPrice(product.price * product.quantity);
+                            setPrice(product.price);
+                            setProductQuantity(product.quantity - 1);
+                          }}
+                        />
+                      </ProductAmountContainer>
+                    ) : (
+                      <></>
+                    )}
+
                     <ProductPrice>
                       $ {product.price * product.quantity}
                     </ProductPrice>
@@ -305,6 +336,7 @@ const Cart = () => {
                         removeItem();
                         setProductId(product._id);
                         setProductPrice(product.price * product.quantity);
+                        setPrice(product.price);
                       }}
                     />
                   </PriceDetail>

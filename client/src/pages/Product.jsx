@@ -165,8 +165,6 @@ const Product = (props) => {
     } else {
       dispatch(addProduct({ ...product, id, quantity, color, size }));
       saveCartDetails();
-      // setAllShow(true);
-      // alert("Product added successful!");
     }
   };
 
@@ -180,12 +178,12 @@ const Product = (props) => {
         },
         body: JSON.stringify({
           userId: user._id,
-          products: [
-            {
-              productId: id,
-              quantity: quantity,
-            },
-          ],
+          productId: id,
+          quantity: quantity,
+          img: product.img,
+          title: product.title,
+          desc: product.desc,
+          price: product.price,
         }),
       });
       let json = await response.json();

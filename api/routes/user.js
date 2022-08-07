@@ -6,6 +6,7 @@ const {
 } = require("./verifyToken");
 
 const router = require("express").Router();
+const CryptoJS = require("crypto-js");
 
 //UPDATE
 // router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
@@ -139,6 +140,20 @@ router.get("/", async (req, res) => {
 //     res.status(500).json(err);
 //   }
 // });
+
+router.post("/email", async (req, res) => {
+  console.log(req.body.email);
+  try {
+    const user = await User.find({ email: req.body.email });
+    // console.log(user);
+    // const { password, ...others } = user._doc;
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+
 router.get("/stats", async (req, res) => {
   const date = new Date();
   const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
