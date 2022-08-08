@@ -20,6 +20,7 @@
     "date-fns": "^2.29.1",
     "google-map-react": "^2.2.0",
     "i": "^0.3.7",
+    "moment": "^2.29.4",
     "npm": "^8.14.0",
     "react": "^17.0.2",
     "react-bootstrap-sweetalert": "^5.2.0",
@@ -33,6 +34,7 @@
     "react-stripe-checkout": "^2.6.3",
     "redux-persist": "^6.0.0",
     "styled-components": "^5.3.1",
+    "timeago.js": "^4.0.2",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

@@ -154,7 +154,7 @@ router.get("/income", async (req, res) => {
       {
         $project: {
           month: { $month: "$createdAt" },
-          sales: "$amount",
+          sales: "$price",
         },
       },
       {

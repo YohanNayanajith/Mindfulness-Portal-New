@@ -6,30 +6,27 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { format } from "timeago.js";
+import moment from 'moment'
 
 export default function OrderHistoryTest() {
   const [data, setData] = useState([]);
   const [show, setShow] = useState(false);
-  const [allShow, setAllShow] = useState(false);
   const [updateShow, setUpdateShow] = useState(false);
-  const [updateActivate, setUpdateActivate] = useState(false);
   const [updateAllShow, setUpdateAllShow] = useState(false);
-  //   const [userId, setUserId] = useState("");
   const [userId, setUserId] = useState("");
   const [deleteTrigger, setDeleteTrigger] = useState("");
   const [cartId, setCartId] = useState("");
-  const navigate = useNavigate();
+  const currentDate = moment();
 
   const user = useSelector((state) => state.user.currentUser._id);
   const URL = `http://localhost:5000/api/v1/orders/find/${user}`;
-  // const URL = `http://192.168.8.187:5000/api/v1/carts/find/${user}`;
-  // const [data, setData] = useState(userRows);
 
   // IP address of local machine - 192.168.8.187
   useEffect(() => {
     setUserId(user.toString());
     console.log(userId);
-    // let URL = "http://192.168.8.187:5000/api/v1/carts/find/"+userId;
+
     const userData = async () => {
       try {
         let response = await fetch(URL, {
@@ -42,6 +39,7 @@ export default function OrderHistoryTest() {
         let json = await response.json();
         setData(json);
         console.log(json);
+        compareDate();
         // setLoading(false);
       } catch (error) {
         alert(error);
@@ -49,6 +47,23 @@ export default function OrderHistoryTest() {
     };
     userData();
   }, [deleteTrigger]);
+
+  const compareDate = () => {
+    data.map((item) => {
+      // let dateCompare = format(item.createdAt);
+      // if (dateCompare > "5 hours ago") {
+      //   console.log("hi");
+      // }
+      
+      let future = moment(item.createdAt);
+      let timeLeft = moment(future.diff(currentDate)).format("HH:mm:ss");
+      if(timeLeft > "23:00:00"){
+        console.log("hi");
+      }
+      console.log(timeLeft);
+      // console.log(dateCompare);
+    });
+  };
 
   // const URL = `http://localhost:5000/api/v1/carts/${cartId}`;
 
@@ -163,35 +178,34 @@ export default function OrderHistoryTest() {
       renderCell: (params) => {
         return (
           <>
-            {/* <Link to={"/user/" + params.row._id}>
-              <button className="userListEdit">Edit</button>
-            </Link> */}
-            {!params.row.isCancel ? (
-              <button
-                className="userListEdit"
-                onClick={() => {
-                  setUpdateShow(true);
-                  setCartId(params.row._id);
-                }}
-                style={{ backgroundColor: "red" }}
-              >
-                Cancel
-              </button>
+            {moment(moment(params.row.createdAt).diff(currentDate)).format("HH:mm:ss") <= "48:00:00" ? (
+              !params.row.isCancel ? (
+                <button
+                  className="userListEdit"
+                  onClick={() => {
+                    setUpdateShow(true);
+                    setCartId(params.row._id);
+                  }}
+                  style={{ backgroundColor: "red" }}
+                >
+                  Cancel
+                </button>
+              ) : (
+                <button
+                  className="userListEdit"
+                  style={{ backgroundColor: "red" }}
+                >
+                  Request Send
+                </button>
+              )
             ) : (
               <button
                 className="userListEdit"
-                style={{ backgroundColor: "red" }}
+                style={{ backgroundColor: "grey" }}
               >
-                Request Send
+                Cancel
               </button>
             )}
-            {/* <DeleteOutline
-              className="userListDelete"
-              onClick={() => {
-                handleDelete(params.row._id);
-                setShow(true);
-              }}
-            /> */}
           </>
         );
       },

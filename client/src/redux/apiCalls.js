@@ -5,7 +5,8 @@ export const login = async (dispatch, user) => {
   dispatch(loginStart());
   try {
     const res = await publicRequest.post("/auth/login", user);
-    if(res.isActivated){
+    console.log(res);
+    if(res.data.isActivated){
       dispatch(loginSuccess(res.data));
       alert("Login Success!");
     }else {
