@@ -22,6 +22,7 @@ import AllArticles from "./components/articles/AllArticles";
 import ArticleList from "./pages/ArticleList";
 import Article from "./pages/Articles";
 import UpdatePassword from "./pages/UpdatePassword";
+import StripePaymentForm from "./pages/Payments/StripePaymentForm";
 
 const App = () => {
   const user = useSelector((state) => state.user);
@@ -73,6 +74,7 @@ const App = () => {
         <Route path="/article/:id" element={<Article />} />
         <Route path="/forgetPassword" element={<ForgetPassword />} />
         <Route path="/updatePassword" element={<UpdatePassword />} />
+        <Route path="/paymentForm" element={<StripePaymentForm />} />
         <Route
           path="/register"
           element={user.currentUser ? <Navigate to="/" /> : <Register />}

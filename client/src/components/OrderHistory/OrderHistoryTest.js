@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function OrderHistoryTest() {
   const [data, setData] = useState([]);
@@ -17,9 +18,10 @@ export default function OrderHistoryTest() {
   const [userId, setUserId] = useState("");
   const [deleteTrigger, setDeleteTrigger] = useState("");
   const [cartId, setCartId] = useState("");
+  const navigate = useNavigate();
 
   const user = useSelector((state) => state.user.currentUser._id);
-  const URL = `http://192.168.8.187:5000/api/v1/carts`;
+  const URL = `http://localhost:5000/api/v1/orders/find/${user}`;
   // const URL = `http://192.168.8.187:5000/api/v1/carts/find/${user}`;
   // const [data, setData] = useState(userRows);
 
@@ -50,9 +52,10 @@ export default function OrderHistoryTest() {
 
   // const URL = `http://localhost:5000/api/v1/carts/${cartId}`;
 
-  const URl_Update = `http://localhost:5000/api/v1/carts/${cartId}`;
+  const URl_Update = `http://localhost:5000/api/v1/orders/${cartId}`;
 
   const updateConfirm = async () => {
+    console.log("Update");
     try {
       let response = await fetch(URl_Update, {
         method: "PUT",
@@ -68,63 +71,18 @@ export default function OrderHistoryTest() {
       setDeleteTrigger("updated");
       console.log(json);
       setUpdateShow(false);
-      // setLoading(false);
     } catch (error) {
       alert(error);
     }
   };
 
-  // const deleteConfirm = async () => {
-  //   setShow(false);
-  //   try {
-  //     let response = await fetch(URL, {
-  //       method: "DELETE",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         // token: token,
-  //       },
-  //     });
-  //     let json = await response.json();
-  //     setDeleteTrigger(json);
-  //     console.log(json);
-  //     setAllShow(true);
-  //     // handleDelete();
-  //     // setLoading(false);
-  //   } catch (error) {
-  //     alert(error);
-  //   }
-  // };
   const deleteCancel = () => {
     setShow(false);
     setUpdateShow(false);
   };
 
-  // const handleDelete = (id) => {
-  //   setCategoryId(id);
-  //   // setData(data.filter((item) => item.id !== id));
-  // };
-
-  // const statusChanged = (id) => {
-  //   setUpdateShow(true);
-  //   setUserId(id);
-  // };
-
   const columns = [
     { field: "_id", headerName: "ID", width: 220 },
-    // { field: "userId", headerName: "userId", width: 220 },
-    // {
-    //   field: 'products',
-    //   headerName: 'Products',
-    //   width: 220,
-    //   renderCell: (params) => (
-    //     <ul className="userListUser">
-    //       {params.value.map((product, index) => (
-    //         <li key={index}>{product.productId}</li>
-    //       ))}
-    //     </ul>
-    //   ),
-    //   type: 'string',
-    // },
     {
       field: "title",
       headerName: "Product Name",
@@ -144,34 +102,6 @@ export default function OrderHistoryTest() {
     },
     { field: "quantity", headerName: "Quantity", width: 150 },
     { field: "price", headerName: "Price", width: 150 },
-    // // {
-    // //   field: "isAdmin",
-    // //   headerName: "Admin or Not",
-    // //   width: 130,
-    // // },
-    // {
-    //   field: "products.quantity",
-    //   headerName: "Quantity",
-    //   width: 220,
-    // },
-    // {
-    //   field: "isPay",
-    //   headerName: "Is pay",
-    //   width: 150,
-    //   renderCell: (params) => {
-    //     return (
-    //       <>
-    //         {!params.row.isPay ? (
-    //           <Link to={"/cart"}>
-    //             <button className="userListEdit">Pay</button>
-    //           </Link>
-    //         ) : (
-    //           <div>Done</div>
-    //         )}
-    //       </>
-    //     );
-    //   },
-    // },
     {
       field: "staus",
       headerName: "Order Status",
@@ -186,8 +116,34 @@ export default function OrderHistoryTest() {
               >
                 {params.row.status}
               </button>
-            ) : params.row.status === "Confirm" ? (
-              <button className="userListEdit">{params.row.status}</button>
+            ) : params.row.status === "Accepted" ? (
+              <button
+                className="userListEdit"
+                style={{ backgroundColor: "#87DD44" }}
+              >
+                {params.row.status}
+              </button>
+            ) : params.row.status === "In Warehouse" ? (
+              <button
+                className="userListEdit"
+                style={{ backgroundColor: "#DD9A44" }}
+              >
+                {params.row.status}
+              </button>
+            ) : params.row.status === "Shipped" ? (
+              <button
+                className="userListEdit"
+                style={{ backgroundColor: "#44A1DD" }}
+              >
+                {params.row.status}
+              </button>
+            ) : params.row.status === "Completed" ? (
+              <button
+                className="userListEdit"
+                style={{ backgroundColor: "#69DD44" }}
+              >
+                {params.row.status}
+              </button>
             ) : (
               <button
                 className="userListEdit"

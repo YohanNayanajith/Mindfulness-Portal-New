@@ -161,7 +161,7 @@ const Article = (props) => {
       setShow(true);
     } else {
       dispatch(addProduct({ ...article, id, quantity, color, size }));
-      saveCartDetails();
+      // saveCartDetails();
     }
   };
 

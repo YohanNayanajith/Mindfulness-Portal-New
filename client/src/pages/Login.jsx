@@ -79,11 +79,12 @@ const Login = () => {
     e.preventDefault();
     login(dispatch, { username, password });
     if(isfail){
-      alert("Username password incorrect!");
       navigation("/login");
     }else {
-      alert("Login Success!");
+      console.log(isFetching);
     }
+    setUsername("");
+    setPassword("");
   };
   return (
     <Container>

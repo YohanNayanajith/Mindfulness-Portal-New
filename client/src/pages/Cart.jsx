@@ -11,6 +11,7 @@ import { userRequest } from "../requestMethods";
 import StripeCheckout from "react-stripe-checkout";
 // import { Search, ShoppingCartOutlined, AccountCircle } from "@material-ui/icons";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import SweetAlert from "react-bootstrap-sweetalert";
 import {
   removeProduct,
   decreaseAddProduct,
@@ -23,9 +24,8 @@ import CheckoutForm from "../components/CheckoutForm";
 // const KEY = process.env.REACT_APP_STRIPE;
 //yohannayanajith13@gmail.com
 
-const KEY =
-  "pk_test_51LQvEKAjPRkUStMYeszYDlKAWx1thKzD8UU92RgiQMeTsHUGozDB2rrN0Nm8nVuCXefDo5t8WCkAcHXkBhoTdFWx00Eg83KkA1";
-console.log(KEY);
+const KEY = "pk_test_51LQvEKAjPRkUStMYeszYDlKAWx1thKzD8UU92RgiQMeTsHUGozDB2rrN0Nm8nVuCXefDo5t8WCkAcHXkBhoTdFWx00Eg83KkA1";
+// console.log(KEY);
 const stripePromise = loadStripe(KEY);
 
 const Container = styled.div``;
@@ -186,6 +186,7 @@ const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const [stripeToken, setStripeToken] = useState(null);
   const [productId, setProductId] = useState("");
+  const [allShow, setAllShow] = useState(false);
   const [productPrice, setProductPrice] = useState(0);
   const [price, setPrice] = useState(0);
   const [productQuantity, setProductQuantity] = useState(0);
@@ -195,24 +196,25 @@ const Cart = () => {
 
   const onToken = (token) => {
     setStripeToken(token);
+    console.log(stripeToken);
   };
-  console.log(stripeToken);
 
   useEffect(() => {
     const makeRequest = async () => {
       try {
-        const res = await userRequest.post("/checkout/payment", {
+        const res = await userRequest.post("http://localhost:5000/api/v1/checkout/payment", {
           tokenId: stripeToken.id,
-          amount: cart.total * 100,
+          amount: 500,
+          // amount: cart.total * 100,
         });
         // history.push("/success", {
         //   stripeData: res.data,
         //   products: cart,
         // });
-        // navigate("/success", {
-        //   stripeData: res.data,
-        //   products: cart,
-        // });
+        navigate("/success", {
+          stripeData: res.data,
+          products: cart,
+        });
         console.log(res);
       } catch {}
     };
@@ -238,6 +240,16 @@ const Cart = () => {
     // updateCartDetails();
   };
 
+  const redirectToPayment = () => {
+    if(cart.total === 0) {
+      setAllShow(true);
+    }else {
+      navigate("/paymentForm", {
+        products: cart,
+      });
+    }
+  }
+
   // const updateCartDetails = async () => {
   //   try {
   //     let response = await fetch(`http://localhost:5000/api/v1/carts/{productId}`, {
@@ -260,6 +272,13 @@ const Cart = () => {
 
   return (
     <Container>
+      <SweetAlert
+        show={allShow}
+        warning
+        title="Cart amount is 0!"
+        // text="SweetAlert in React"
+        onConfirm={() => setAllShow(false)}
+      ></SweetAlert>
       <Navbar />
       <Announcement />
       <Wrapper>
@@ -270,7 +289,7 @@ const Cart = () => {
             {/* <TopText>Shopping Bag(2)</TopText> */}
             {/* <TopText>Your Wishlist (0)</TopText> */}
           </TopTexts>
-          <TopButton type="filled">CHECKOUT NOW</TopButton>
+          <TopButton type="filled" onClick={redirectToPayment}>CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
           <Info>
@@ -363,7 +382,7 @@ const Cart = () => {
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
-            <StripeCheckout
+            {/* <StripeCheckout
               name="MindFulness"
               image="https://avatars.githubusercontent.com/u/1486366?v=4"
               billingAddress
@@ -374,11 +393,8 @@ const Cart = () => {
               stripeKey={KEY}
             >
               <Button>CHECKOUT NOW</Button>
-            </StripeCheckout>
-            {/* <Elements stripe={stripePromise} options={options}>
-            {/* <Elements stripe={stripePromise} >
-              <CheckoutForm />
-            </Elements> */}
+            </StripeCheckout> */}
+            <Button onClick={redirectToPayment}>CHECKOUT NOW</Button>
           </Summary>
         </Bottom>
       </Wrapper>
