@@ -15,7 +15,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import AllProducts from "./components/AllProducts";
 import ContactUs from "./pages/ContactUs";
-import ForgetPassword from "./pages/ForgotPassword";
+import ForgotPassword from "./pages/ForgotPassword";
+import ForgetPassword from "./pages/ForgetPassword";
 import OrderHistory from "./pages/OrderHistory";
 import Articles from "./pages/Articles";
 import AllArticles from "./components/articles/AllArticles";
@@ -23,6 +24,7 @@ import ArticleList from "./pages/ArticleList";
 import Article from "./pages/Articles";
 import UpdatePassword from "./pages/UpdatePassword";
 import StripePaymentForm from "./pages/Payments/StripePaymentForm";
+import ValidationPage from "./pages/ValidationPage";
 
 const App = () => {
   const user = useSelector((state) => state.user);
@@ -67,7 +69,7 @@ const App = () => {
         <Route path="/products" element={<AllProducts />} />
         <Route path="/contactus" element={<ContactUs />} />
         <Route path="/login" element={user.currentUser ? <Navigate to="/" /> : <Login />} />
-        <Route path="/forgotPassword" element={<ForgetPassword />} />
+        {/* <Route path="/forgotPassword" element={<ForgotPassword />} /> */}
         <Route path="/orderHistory" element={<OrderHistory />} />
         <Route path="/article" element={<AllArticles />} />
         <Route path="/articles/:category" element={<ArticleList />} />
@@ -75,6 +77,7 @@ const App = () => {
         <Route path="/forgetPassword" element={<ForgetPassword />} />
         <Route path="/updatePassword" element={<UpdatePassword />} />
         <Route path="/paymentForm" element={<StripePaymentForm />} />
+        <Route path="/validation" element={<ValidationPage />} />
         <Route
           path="/register"
           element={user.currentUser ? <Navigate to="/" /> : <Register />}

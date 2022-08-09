@@ -1,14 +1,14 @@
 import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess } from "../redux/userSlice";
+import { setRandomNumber } from '../redux/randomRedux';
 import SweetAlert from "react-bootstrap-sweetalert";
 // import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import emailjs from "@emailjs/browser";
-// import {
-//   useNavigate,
-// } from 'react-router-dom';
+import { useNavigate } from "react-router";
+
 
 const Container = styled.div`
   width: 100vw;
@@ -81,14 +81,15 @@ const ForgetPassword = () => {
   const dispatch = useDispatch();
   const form = useRef();
   const [show, setShow] = useState(false);
-  const [randomNumber, setRandomNumber] = useState(0);
+  // const [randomNumber, setRandomNumber] = useState(0);
+  const navigation  = useNavigate();
 
   const handleClick = (e) => {
     e.preventDefault();
     const checkEmail = async () => {
       try {
         let response = await fetch(
-          "http://192.168.8.187:5000/api/v1/user/email",
+          "http://localhost:5000/api/v1/user/email",
           {
             method: "POST",
             headers: {
@@ -101,11 +102,11 @@ const ForgetPassword = () => {
           }
         );
         let json = await response.json();
-        console.log(json);
+        // console.log(json);
         setData(json[0]);
         setUserId(json[0]._id);
-        sendEmail(e);
-        dispatch(loginSuccess(data));
+        sendEmail(json[0]);
+        dispatch(loginSuccess(json[0]));
         // checkLogin(json[0]._id);
       } catch (error) {
         setAllErrorShow(true);
@@ -115,30 +116,31 @@ const ForgetPassword = () => {
   };
 
   //   updatePassword
-  const sendEmail = (e) => {
+  const sendEmail = (userData) => {
     let RandomNumber = Math.floor(Math.random() * 10000) + 1;
-    setRandomNumber(RandomNumber);
     var templateParams = {
-      user_name: data.username,
-      user_email: data.email,
-      message: "Verification code is " + randomNumber,
+      user_name: userData.username,
+      user_email: userData.email,
+      message: "Verification code is " + RandomNumber,
     };
 
-    console.log(templateParams);
+    // console.log(templateParams);
 
     emailjs
       .send(
-        "service_ntuuid7",
-        "template_n8skbru",
+        "service_m6aluv6",
+        "template_sb99nip",
         templateParams,
-        "o0lw901wGvFdlC5iy"
+        "Q_-lY5fRb6PO6d6BG"
       )
       .then(
         (result) => {
-          console.log(result.text);
+          // console.log(result.text);
           setShow(true);
-          e.target.reset();
-          window.location.href = "http://localhost:3000/updatePassword";
+          // e.target.reset();
+          // window.location.href = "http://localhost:3000/updatePassword";
+          dispatch(setRandomNumber(RandomNumber));
+          navigation("/validation",{"RandomNumber":RandomNumber});
         },
         (error) => {
           console.log(error.text);
@@ -163,14 +165,14 @@ const ForgetPassword = () => {
             required
           />
 
-          <Button disabled={isFetching}>Check Email</Button>
+          <Button>Send Email</Button>
         </Form>
       </Wrapper>
 
       <SweetAlert
         show={allErrorShow}
         danger
-        title="Password Changed Unsuccessfully!"
+        title="Email Sent Unsuccessfully!"
         // text="SweetAlert in React"
         onConfirm={() => setAllErrorShow(false)}
       ></SweetAlert>

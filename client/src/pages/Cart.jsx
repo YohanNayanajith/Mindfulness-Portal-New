@@ -196,7 +196,7 @@ const Cart = () => {
 
   const onToken = (token) => {
     setStripeToken(token);
-    console.log(stripeToken);
+    // console.log(stripeToken);
   };
 
   useEffect(() => {
@@ -215,7 +215,7 @@ const Cart = () => {
           stripeData: res.data,
           products: cart,
         });
-        console.log(res);
+        // console.log(res);
       } catch {}
     };
     // stripeToken && cart.total >= 1 && makeRequest();

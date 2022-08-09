@@ -69,7 +69,7 @@ const Link = styled.a`
   color: black;
 `;
 
-const ForgetPassword = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -180,4 +180,4 @@ const ForgetPassword = () => {
   );
 };
 
-export default ForgetPassword;
+export default ForgotPassword;

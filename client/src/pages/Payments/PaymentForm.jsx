@@ -52,7 +52,7 @@ const PaymentForm = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            amount: cart.total,
+            amount: cart.total*100,
             currency: "usd",
           }),
         }
@@ -113,7 +113,7 @@ const PaymentForm = () => {
           body: JSON.stringify({
             userId: user,
             productId: item._id,
-            quantity: cart.quantity,
+            quantity: item.quantity,
             title: item.title,
             desc: item.desc,
             img: item.img,

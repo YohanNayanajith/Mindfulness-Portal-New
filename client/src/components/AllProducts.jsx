@@ -64,23 +64,22 @@ const AllProducts = () => {
       <FilterContainer>
         <Filter>
           <FilterText>Filter Products:</FilterText>
-          <Select name="color" onChange={handleFilters}>
-            <Option disabled>Color</Option>
-            <Option>white</Option>
-            <Option>black</Option>
-            <Option>red</Option>
-            <Option>blue</Option>
-            <Option>yellow</Option>
-            <Option>green</Option>
+          <Select name="categories" onChange={handleFilters}>
+            <Option>Category</Option>
+            <Option value="books">Books</Option>
+            <Option value="instructorSessions">Instructor Sessions</Option>
+            <Option value="dvd">CDS/DVD</Option>
+            <Option value="essentialOils">Essential Oils</Option>
+            <Option value="incenseSticks">Incense Sticks</Option>
           </Select>
-          <Select name="size" onChange={handleFilters}>
+          {/* <Select name="size" onChange={handleFilters}>
             <Option disabled>Size</Option>
             <Option>XS</Option>
             <Option>S</Option>
             <Option>M</Option>
             <Option>L</Option>
             <Option>XL</Option>
-          </Select>
+          </Select> */}
         </Filter>
         <Filter>
           <FilterText>Sort Products:</FilterText>

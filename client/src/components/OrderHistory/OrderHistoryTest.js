@@ -25,7 +25,7 @@ export default function OrderHistoryTest() {
   // IP address of local machine - 192.168.8.187
   useEffect(() => {
     setUserId(user.toString());
-    console.log(userId);
+    // console.log(userId);
 
     const userData = async () => {
       try {
@@ -38,8 +38,8 @@ export default function OrderHistoryTest() {
         });
         let json = await response.json();
         setData(json);
-        console.log(json);
-        compareDate();
+        // console.log(json);
+        // compareDate();
         // setLoading(false);
       } catch (error) {
         alert(error);
@@ -49,18 +49,13 @@ export default function OrderHistoryTest() {
   }, [deleteTrigger]);
 
   const compareDate = () => {
-    data.map((item) => {
-      // let dateCompare = format(item.createdAt);
-      // if (dateCompare > "5 hours ago") {
-      //   console.log("hi");
-      // }
-      
+    data.map((item) => {     
       let future = moment(item.createdAt);
       let timeLeft = moment(future.diff(currentDate)).format("HH:mm:ss");
       if(timeLeft > "23:00:00"){
         console.log("hi");
       }
-      console.log(timeLeft);
+      // console.log(timeLeft);
       // console.log(dateCompare);
     });
   };
@@ -70,7 +65,7 @@ export default function OrderHistoryTest() {
   const URl_Update = `http://localhost:5000/api/v1/orders/${cartId}`;
 
   const updateConfirm = async () => {
-    console.log("Update");
+    // console.log("Update");
     try {
       let response = await fetch(URl_Update, {
         method: "PUT",
@@ -83,8 +78,8 @@ export default function OrderHistoryTest() {
         }),
       });
       let json = await response.json();
-      setDeleteTrigger("updated");
-      console.log(json);
+      setDeleteTrigger(json);
+      // console.log(json);
       setUpdateShow(false);
     } catch (error) {
       alert(error);
@@ -97,7 +92,7 @@ export default function OrderHistoryTest() {
   };
 
   const columns = [
-    { field: "_id", headerName: "ID", width: 220 },
+    { field: "_id", headerName: "Order ID", width: 220 },
     {
       field: "title",
       headerName: "Product Name",
@@ -202,6 +197,7 @@ export default function OrderHistoryTest() {
               <button
                 className="userListEdit"
                 style={{ backgroundColor: "grey" }}
+                disabled
               >
                 Cancel
               </button>

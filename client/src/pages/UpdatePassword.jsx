@@ -6,9 +6,7 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { logout } from "../redux/userSlice";
-// import {
-//   useNavigate,
-// } from 'react-router-dom';
+import { useNavigate } from "react-router";
 
 const Container = styled.div`
   width: 100vw;
@@ -72,7 +70,6 @@ const Link = styled.a`
 `;
 
 const UpdatePassword = () => {
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const user = useSelector((state) => state.user.currentUser);
@@ -83,32 +80,38 @@ const UpdatePassword = () => {
   const [allShow, setAllShow] = useState(false);
   const [allErrorShow, setAllErrorShow] = useState(false);
   const dispatch = useDispatch();
+  const navigation = useNavigate();
   // const navigation = useNavigate();
 
   const checkLogin = async (e) => {
     e.preventDefault();
-    try {
-      let response = await fetch(
-        `http://192.168.8.187:5000/api/v1/user/${user._id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            // token: token,
-          },
-          body: JSON.stringify({
-            password: password,
-            confirm_password: confirmPassword,
-          }),
-        }
-      );
-      let json = await response.json();
-      setData(json);
-      setAllShow(true);
-      dispatch(logout());
-      window.location.href = "http://localhost:3000/login";
-    } catch (error) {
-      setAllErrorShow(true);
+    if (password === confirmPassword) {
+      try {
+        let response = await fetch(
+          `http://localhost:5000/api/v1/user/${user._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              // token: token,
+            },
+            body: JSON.stringify({
+              password: password,
+              confirm_password: confirmPassword,
+            }),
+          }
+        );
+        let json = await response.json();
+        setData(json);
+        setAllShow(true);
+        dispatch(logout());
+        // window.location.href = "http://localhost:3000/login";
+        navigation("/login");
+      } catch (error) {
+        setAllErrorShow(true);
+      }
+    } else {
+
     }
   };
 
@@ -143,6 +146,13 @@ const UpdatePassword = () => {
         show={allErrorShow}
         danger
         title="Password Changed Unsuccessfully!"
+        // text="SweetAlert in React"
+        onConfirm={() => setAllErrorShow(false)}
+      ></SweetAlert>
+      <SweetAlert
+        show={allErrorShow}
+        warning
+        title="Enter Same Confirm Password!"
         // text="SweetAlert in React"
         onConfirm={() => setAllErrorShow(false)}
       ></SweetAlert>

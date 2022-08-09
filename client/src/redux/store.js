@@ -1,6 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import cartReducer from "./cartRedux";
 import userReducer from "./userSlice";
+import randomReducer from "./randomRedux";
 import {
   persistStore,
   persistReducer,
@@ -13,31 +14,31 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-// const persistConfig = {
-//   key: "root",
-//   version: 1,
-//   storage,
-// };
+const persistConfig = {
+  key: "root",
+  version: 1,
+  storage,
+};
 
-// const rootReducer = combineReducers({ user: userReducer, cart: cartReducer });
+const rootReducer = combineReducers({ user: userReducer, cart: cartReducer, random: randomReducer });
 
-// const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// export const store = configureStore({
-//   reducer: persistedReducer,
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware({
-//       serializableCheck: { 
-//         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-//       },
-//     }),
-// });
-
-// export let persistor = persistStore(store);
-
-export default configureStore({
-    reducer: {
-        cart: cartReducer,
-        user: userReducer
-    }
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: { 
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
+
+export let persistor = persistStore(store);
+
+// export default configureStore({
+//     reducer: {
+//         cart: cartReducer,
+//         user: userReducer
+//     }
+// });

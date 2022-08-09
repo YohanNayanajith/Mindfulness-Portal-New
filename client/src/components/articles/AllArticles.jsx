@@ -51,6 +51,7 @@ const AllArticles = () => {
 
   const handleFilters = (e) => {
     const value = e.target.value;
+    // console.log(value);
     setFilters({
       ...filters,
       [e.target.name]: value,
@@ -63,26 +64,25 @@ const AllArticles = () => {
       <Announcement />
       <Title>All Articles</Title>
       <FilterContainer>
-        {/* <Filter>
+        <Filter>
           <FilterText>Filter Articles:</FilterText>
-          <Select name="color" onChange={handleFilters}>
-            <Option disabled>Color</Option>
-            <Option>white</Option>
-            <Option>black</Option>
-            <Option>red</Option>
-            <Option>blue</Option>
-            <Option>yellow</Option>
-            <Option>green</Option>
+          <Select name="categories" onChange={handleFilters}>
+            {/* <Option disabled>Category</Option> */}
+            <Option>Category</Option>
+            <Option value="mindfulness">Mindfulness</Option>
+            <Option value="yoga">Yoga</Option>
+            <Option value="minimalism">Minimalism</Option>
+            <Option value="thoughts">Thoughts</Option>
           </Select>
-          <Select name="size" onChange={handleFilters}>
+          {/* <Select name="size" onChange={handleFilters}>
             <Option disabled>Size</Option>
             <Option>XS</Option>
             <Option>S</Option>
             <Option>M</Option>
             <Option>L</Option>
             <Option>XL</Option>
-          </Select>
-        </Filter> */}
+          </Select> */}
+        </Filter>
         <Filter>
           <FilterText>Sort Articles:</FilterText>
           <Select onChange={(e) => setSort(e.target.value)}>

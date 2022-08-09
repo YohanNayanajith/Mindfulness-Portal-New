@@ -123,8 +123,8 @@ const Button = styled.button`
 
 const Product = (props) => {
   const id = window.location.pathname.split("/")[2];
-  console.log(window.location.href);
-  console.log(id);
+  // console.log(window.location.href);
+  // console.log(id);
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("");
@@ -142,7 +142,7 @@ const Product = (props) => {
       try {
         const res = await publicRequest.get("/products/find/" + id);
         setProduct(res.data);
-        console.log(res.data);
+        // console.log(res.data);
       } catch {}
     };
     getProduct();
@@ -158,10 +158,16 @@ const Product = (props) => {
 
   const handleClick = () => {
     // if (!size || !color) {
-    if (!color) {
-      // alert("Please select color & size!");
-      setAllFailShow(true);
-    } else if (!user) {
+    // if (!color) {
+    //   // alert("Please select color & size!");
+    //   setAllFailShow(true);
+    // } else if (!user) {
+    //   setShow(true);
+    // } else {
+    //   dispatch(addProduct({ ...product, id, quantity, color, size }));
+    //   saveCartDetails();
+    // }
+    if (!user) {
       setShow(true);
     } else {
       dispatch(addProduct({ ...product, id, quantity, color, size }));
@@ -189,7 +195,7 @@ const Product = (props) => {
       });
       let json = await response.json();
       setData(json);
-      console.log(json);
+      // console.log(json);
       setAllShow(true);
       // setLoading(false);
     } catch (error) {
@@ -218,7 +224,7 @@ const Product = (props) => {
           <Desc>{product.desc}</Desc>
           <Price>{product.price}</Price>
           <FilterContainer>
-            <Filter>
+            {/* <Filter>
               <FilterTitle>Color</FilterTitle>
               {product.color?.map((item) => (
                 <FilterColor
@@ -235,7 +241,7 @@ const Product = (props) => {
                   <FilterSizeOption key={item}>{item}</FilterSizeOption>
                 ))}
               </FilterSize>
-            </Filter>
+            </Filter> */}
           </FilterContainer>
           <AddContainer>
             <AmountContainer>

@@ -22,11 +22,11 @@ export const sliderItems = [
     },
   ];
 
-  export const categoriesOLD = [
+  export const categories = [
     {
       id: 1,
       img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      title: "MINDFULNESS!",
+      title: "MINDFULNESS",
       cat:"mindfulness",
     },
     {
@@ -41,9 +41,15 @@ export const sliderItems = [
       title: "MINIMALISM",
       cat:"minimalism",
     },
+    {
+      id: 4,
+      img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      title: "THOUGHTS",
+      cat:"thoughts",
+    },
   ];
   
-  export const categories = [
+  export const categoriesOLD = [
     {
       id: 1,
       img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",

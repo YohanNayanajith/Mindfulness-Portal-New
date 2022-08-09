@@ -25,7 +25,7 @@ const ArticlesComponent = ({ cat, filters, sort, number }) => {
             ? `http://localhost:5000/api/v1/article?category=${cat}`
             : "http://localhost:5000/api/v1/article"
         );
-        console.log(res);
+        // console.log(res);
         setProducts(res.data);
       } catch (err) {
         console.log(err);
