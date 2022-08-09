@@ -71,7 +71,7 @@ const ArticleComponent = ({ item }) => {
   return (
     <Container>
       <Circle />
-      <Image src={item.img} />
+      <Image src="https://res.cloudinary.com/midefulness/image/upload/v1659944719/samples/21.-Penulisan-Artikel-Ilmiah-Populer-Mudah-dan-Menyenangkan_plij6v.jpg" />
       <Info>
         {/* <Icon>
           <ShoppingCartOutlined />

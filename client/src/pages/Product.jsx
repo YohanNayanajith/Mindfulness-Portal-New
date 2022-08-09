@@ -157,7 +157,8 @@ const Product = (props) => {
   };
 
   const handleClick = () => {
-    if (!size || !color) {
+    // if (!size || !color) {
+    if (!color) {
       // alert("Please select color & size!");
       setAllFailShow(true);
     } else if (!user) {

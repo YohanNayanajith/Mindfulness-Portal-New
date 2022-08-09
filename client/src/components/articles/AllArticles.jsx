@@ -86,9 +86,10 @@ const AllArticles = () => {
         <Filter>
           <FilterText>Sort Articles:</FilterText>
           <Select onChange={(e) => setSort(e.target.value)}>
+          <Option value="all">All</Option>
             <Option value="newest">Newest</Option>
-            <Option value="asc">Price (asc)</Option>
-            <Option value="desc">Price (desc)</Option>
+            {/* <Option value="asc">Price (asc)</Option> */}
+            {/* <Option value="desc">Price (desc)</Option> */}
           </Select>
         </Filter>
       </FilterContainer>

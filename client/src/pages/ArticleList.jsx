@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Announcement from "../components/Announcement";
@@ -7,6 +7,7 @@ import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import { mobile } from "../responsive";
 import ArticlesComponent from "../components/articles/ArticlesComponent";
+import { categories } from "../data";
 
 const Container = styled.div``;
 
@@ -42,6 +43,15 @@ const ArticleList = () => {
   const cat = window.location.pathname.split("/")[2];
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState("newest");
+  const [title,setTitle] = useState(cat);
+
+  useEffect(()=>{
+    categories.map((item)=>{
+      if(item.cat === cat){
+        setTitle(item.title);
+      }
+    });
+  },[]);
 
   const handleFilters = (e) => {
     const value = e.target.value;
@@ -55,7 +65,7 @@ const ArticleList = () => {
     <Container>
       <Navbar />
       <Announcement />
-      <Title>{cat}</Title>
+      <Title>{title}</Title>
       <FilterContainer>
         {/* <Filter>
           <FilterText>Filter Articles:</FilterText>

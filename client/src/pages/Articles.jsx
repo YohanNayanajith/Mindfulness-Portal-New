@@ -17,6 +17,8 @@ const Container = styled.div``;
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   ${mobile({ padding: "10px", flexDirection: "column" })}
 `;
 
@@ -38,7 +40,7 @@ const InfoContainer = styled.div`
 `;
 
 const Title = styled.h1`
-  font-weight: 200;
+  font-weight: 500;
 `;
 
 const Desc = styled.p`
@@ -206,12 +208,15 @@ const Article = (props) => {
       <Navbar />
       <Announcement />
       <Wrapper>
-        <ImgContainer>
+        <InfoContainer>
+          <Title style={{marginBottom:30}}>{article.title}</Title>
+        </InfoContainer>
+        <ImgContainer style={{marginBottom:30}}>
           {/* <Image src={article.img} /> */}
           <iframe
             width="853"
             height="480"
-            src={`https://www.youtube.com/embed/rokGy0huYEA`}
+            src={article.img}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
@@ -219,8 +224,7 @@ const Article = (props) => {
           />
         </ImgContainer>
         <InfoContainer>
-          <Title>{article.title}</Title>
-          <Desc>{article.desc}</Desc>
+          <Desc style={{marginBottom:30, fontSize:18, lineHeight:1.5}}>{article.desc}</Desc>
           {/* <Price>{article.price}</Price> */}
           <FilterContainer>
             {/* <Filter>

@@ -22,7 +22,7 @@ export const sliderItems = [
     },
   ];
 
-  export const categories = [
+  export const categoriesOLD = [
     {
       id: 1,
       img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -40,6 +40,39 @@ export const sliderItems = [
       img: "https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
       title: "MINIMALISM",
       cat:"minimalism",
+    },
+  ];
+  
+  export const categories = [
+    {
+      id: 1,
+      img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      title: "BOOKS!",
+      cat:"books",
+    },
+    {
+      id: 2,
+      img: "https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      title: "INSTRUCTOR SESSIONS",
+      cat:"instructorSessions",
+    },
+    {
+      id: 3,
+      img: "https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
+      title: "CDS/DVD",
+      cat:"dvd",
+    },
+    {
+      id: 4,
+      img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      title: "ESSENTIAL OILS",
+      cat:"essentialOils",
+    },
+    {
+      id: 5,
+      img: "https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
+      title: "INCENSE STICKS",
+      cat:"incenseSticks",
     },
   ];
 

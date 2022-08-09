@@ -31,6 +31,7 @@ const Info = styled.div`
 const Title = styled.h1`
   color: white;
   margin-bottom: 20px;
+  text-align: center;
 `;
 
 const Button = styled.button`
