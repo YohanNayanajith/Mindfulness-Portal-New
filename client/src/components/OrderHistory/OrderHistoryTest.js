@@ -39,7 +39,7 @@ export default function OrderHistoryTest() {
         let json = await response.json();
         setData(json);
         // console.log(json);
-        // compareDate();
+        compareDate();
         // setLoading(false);
       } catch (error) {
         alert(error);
@@ -49,15 +49,22 @@ export default function OrderHistoryTest() {
   }, [deleteTrigger]);
 
   const compareDate = () => {
-    data.map((item) => {     
-      let future = moment(item.createdAt);
-      let timeLeft = moment(future.diff(currentDate)).format("HH:mm:ss");
-      if(timeLeft > "23:00:00"){
-        console.log("hi");
-      }
-      // console.log(timeLeft);
-      // console.log(dateCompare);
-    });
+    // let future = moment("2022-08-07T15:35:20.624+00:00").format("HH:mm:ss");
+    // let future = moment("2022-08-06T15:35:20.624+00:00").fromNow().toString();
+    // console.log(future);
+    let dataSet = moment("2022-08-07T15:35:20.624+00:00").format("HH:mm:ss");
+    console.log(dataSet);
+    // var date1 = new Date('2022-08-07T15:35:20.624+00:00');
+    // console.log(date1.getTime());
+    // data.map((item) => {     
+      let future = moment("2022-08-07T15:35:20.624+00:00");
+      let timeLeft = moment(future.diff("2022-08-09T15:35:20.624+00:00")).format('d');
+    //   if(timeLeft > "23:00:00"){
+    //     console.log("hi");
+    //   }
+      console.log(timeLeft);
+    //   // console.log(dateCompare);
+    // });
   };
 
   // const URL = `http://localhost:5000/api/v1/carts/${cartId}`;
@@ -173,7 +180,10 @@ export default function OrderHistoryTest() {
       renderCell: (params) => {
         return (
           <>
-            {moment(moment(params.row.createdAt).diff(currentDate)).format("HH:mm:ss") <= "48:00:00" ? (
+          {/* {moment(params.row.createdAt).format('L')} */}
+          {moment(params.row.createdAt).format('L')+2}
+            {/* {moment(moment(params.row.createdAt).diff(currentDate)).format("HH:mm:ss") <= "24:00:00" ? ( */}
+            {moment(params.row.createdAt).fromNow() <= moment().format('L') ? (
               !params.row.isCancel ? (
                 <button
                   className="userListEdit"
