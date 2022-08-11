@@ -4,7 +4,6 @@ const stripe = Stripe('sk_test_51LQvEKAjPRkUStMY1WBEiw2U9uw2y5PbqpK7sdHFAVYcARCw
 const Payment = require('../models/Payment');
 
 router.post("/create-payment-intent", async (req, res) => {
-  console.log("Payment hari");
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: req.body.amount, //lowest denomination of particular currency
@@ -14,7 +13,7 @@ router.post("/create-payment-intent", async (req, res) => {
 
     
     const clientSecret = paymentIntent.client_secret;
-    console.log(clientSecret);
+    // console.log(clientSecret);
 
     res.json({
       clientSecret: clientSecret,
@@ -63,7 +62,6 @@ router.post("/payment", (req, res) => {
 
 //create new payment
 router.post("/", async (req, res) => {
-  console.log("Payment eka save kala");
   const payment = new Payment(req.body);
 
   try {
