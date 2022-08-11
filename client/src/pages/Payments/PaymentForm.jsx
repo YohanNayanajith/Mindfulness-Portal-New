@@ -117,7 +117,7 @@ const PaymentForm = () => {
             title: item.title,
             desc: item.desc,
             img: item.img,
-            price: item.price,
+            price: item.price*item.quantity,
             isPay: true,
           }),
         });

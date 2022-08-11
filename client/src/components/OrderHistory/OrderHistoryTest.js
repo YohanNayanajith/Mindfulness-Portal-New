@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { format } from "timeago.js";
-import moment from 'moment'
+import moment from "moment";
 
 export default function OrderHistoryTest() {
   const [data, setData] = useState([]);
@@ -56,13 +56,21 @@ export default function OrderHistoryTest() {
     console.log(dataSet);
     // var date1 = new Date('2022-08-07T15:35:20.624+00:00');
     // console.log(date1.getTime());
-    // data.map((item) => {     
-      let future = moment("2022-08-07T15:35:20.624+00:00");
-      let timeLeft = moment(future.diff("2022-08-09T15:35:20.624+00:00")).format('d');
-    //   if(timeLeft > "23:00:00"){
-    //     console.log("hi");
-    //   }
-      console.log(timeLeft);
+    // data.map((item) => {
+    let future = moment("2022-08-20T15:35:20.624+00:00");
+    let future1 = moment("2022-08-04T15:35:20.624+00:00");
+    let timeLeft = moment(future.diff("2022-08-09T15:35:20.624+00:00")).format(
+      "d"
+    );
+    // let range = moment().range(future, future1);
+    // console.log(range);
+    var given = moment("2018-03-10", "YYYY-MM-DD");
+    var current = moment().startOf("day");
+
+    //Difference in number of days
+    let result = moment.duration(currentDate.diff(future1)).asDays();
+    console.log(result);
+    console.log(current);
     //   // console.log(dateCompare);
     // });
   };
@@ -180,10 +188,11 @@ export default function OrderHistoryTest() {
       renderCell: (params) => {
         return (
           <>
-          {/* {moment(params.row.createdAt).format('L')} */}
-          {moment(params.row.createdAt).format('L')+2}
+            {/* {moment(params.row.createdAt).format('L')} */}
+            {/* {moment(params.row.createdAt).format("L") + 2} */}
             {/* {moment(moment(params.row.createdAt).diff(currentDate)).format("HH:mm:ss") <= "24:00:00" ? ( */}
-            {moment(params.row.createdAt).fromNow() <= moment().format('L') ? (
+            {/* {moment(params.row.createdAt).fromNow() <= moment().format("L") ? ( */}
+            {moment.duration(currentDate.diff(params.row.createdAt)).asDays() <= 2 ? (
               !params.row.isCancel ? (
                 <button
                   className="userListEdit"
@@ -209,7 +218,7 @@ export default function OrderHistoryTest() {
                 style={{ backgroundColor: "grey" }}
                 disabled
               >
-                Cancel
+                Expired
               </button>
             )}
           </>

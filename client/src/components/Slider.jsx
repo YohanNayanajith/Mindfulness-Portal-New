@@ -108,10 +108,10 @@ const Slider = () => {
             <ImgContainer>
               <Image src={item.img} />
             </ImgContainer>
-            <InfoContainer>
+            <InfoContainer style={{marginBottom: 20}}>
               <Title>{item.title}</Title>
               <Desc>{item.desc}</Desc>
-              <Button onClick={openShopPage}>SHOP NOW</Button>
+              {/* <Button onClick={openShopPage}>SHOP NOW</Button> */}
             </InfoContainer>
           </Slide>
         ))}
