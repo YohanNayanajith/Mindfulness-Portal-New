@@ -53,12 +53,14 @@ router.post("/login", async (req, res) => {
 
     originalPassword != inputPassword && res.status(401).json("Wrong Password");
 
+    const JWT_SEC = "mindfulness";
+
     const accessToken = jwt.sign(
       {
         id: user._id,
         isAdmin: user.isAdmin,
       },
-      process.env.JWT_SEC,
+      JWT_SEC,
       { expiresIn: "3d" }
     );
 
